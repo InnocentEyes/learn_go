@@ -43,7 +43,9 @@ func main() {
 	fmt.Printf("len:%d cap:%d ", len(s7), cap(s7))
 
 	a1[0] = 100
-	a1[4] = 200
+	s6[4] = 200
 
+	//切片是引用类型,都指向了底层的一个数组
 	fmt.Println("结果是: ", a1, s2, s3, s4, s5, s6)
+
 }
