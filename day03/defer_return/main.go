@@ -10,16 +10,24 @@ import "fmt"
 func f1() int{
 	x := 5
 	defer func() {
-		x++
+		x++ //修改的是x不是返回值
 	}()
-	return x
+	return x //1.返回值赋值 2.defer 3.真正的RET指令
 }
 
 func f2() (x int) {
 	defer func() {
 		x++
 	}()
-	return x
+	return x //返回值= x
+}
+
+func f5() (y int) {
+	x := 5
+	defer func() {
+		x++
+	}()
+	return x //1.返回值 = y = x = 5 2.defer修改的是x 3.真正的返回
 }
 
 func f3() (y *int) {
@@ -33,9 +41,24 @@ func f3() (y *int) {
 
 func f4() (x int) {
 	defer func(x int) {
-		x++
+		x++ // 改变的是函数中x的副本
 	}(x)
 	return 5 //返回值 = x = 5
+}
+
+func f6() (x int) {
+	defer func(x int) int {
+		x++
+		return x
+	}(x)
+	return 5
+}
+
+func f7() (x int) {
+	defer func(x *int) {
+		*x++
+	}(&x)
+	return 5 // 1.返回值 = x = 5 2.defer x = 6 3. RET指令
 }
 
 func main() {
@@ -43,4 +66,7 @@ func main() {
 	fmt.Println(f2())
 	fmt.Println(*f3())
 	fmt.Println(f4())
+	fmt.Println(f5())
+	fmt.Println(f6())
+	fmt.Println(f7())
 }
